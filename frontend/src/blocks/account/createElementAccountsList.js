@@ -1,20 +1,20 @@
 /* eslint-disable no-console */
 /* eslint-disable import/prefer-default-export */
-import { el, mount } from 'redom';
+import { mount } from 'redom';
 import { getAccounts } from '../api/api';
 import clickCardAccount from './clickCardAccount';
+import createElementList from '../generalElements/createElementList';
 
 export function createElementAccountsList(router) {
   const token = localStorage.getItem('token');
 
-  const list = el('ul', {
-    className: 'accounts__list list-reset',
+  const list = createElementList('ul', {
+    className: 'accounts__list',
   });
 
   getAccounts(token).then((res) => {
     console.log(res);
     const arrayAccounts = res.payload;
-    const arrayAccountsHelp = [];
 
     arrayAccounts.forEach((data) => {
       let date = null;
@@ -42,42 +42,41 @@ export function createElementAccountsList(router) {
         date = '';
       }
 
-      const item = el('li', {
-        className: 'accounts__item',
-      },
-      [
-        el('p', data.account, {
-          className: 'accounts__item-number',
-          'data-number': data.account,
-        }),
-        el('p', `${data.balance.toFixed(2)} ₽`, {
-          className: 'accounts__item-balance',
-          'data-balance': data.balance.toFixed(2),
-        }),
-        el(
-          'div',
-          {
-            className: 'accounts__item-wrapper',
-          },
-          [
-            el('p', 'Последняя транзакция:', {
-              className: 'accounts__item-wrapper-transaction',
-            }),
-            el('p', date, {
-              className: 'accounts__item-wrapper-date',
-              'data-last-transaction': date,
-            }),
-          ],
-        ),
-        el('button', 'Открыть', {
-          className: 'accounts__item-open btn-reset',
-        }),
-      ]);
 
-      arrayAccountsHelp.push(item);
-    });
+     const item = createElementList('li', {
+          className: 'accounts__item',
+           children: [
+            createElementList('p', {
+                text: data.account,
+                 className: 'accounts__item-number',
+                 dataset: { number: data.account},
+            }),
+              createElementList('p', {
+                  text: `${data.balance.toFixed(2)} ₽`,
+                   className: 'accounts__item-balance',
+                    dataset: { balance: data.balance.toFixed(2) }
+              }),
+              () => createElementList(
+                  'div',
+                  {
+                    className: 'accounts__item-wrapper',
+                    children: [
+                    createElementList('p', {
+                    text: 'Последняя транзакция:',
+                       className: 'accounts__item-wrapper-transaction',
+                }),
+                    createElementList('p', {
+                        text: date,
+                         className: 'accounts__item-wrapper-date',
+                           dataset: { lastTransaction: date }
+                     })
+                     ]
 
-    arrayAccountsHelp.forEach((item) => {
+                }),
+                  createElementList('button', { text: 'Открыть', className: 'accounts__item-open btn-reset' })
+           ]
+     })
+
       mount(list, item);
     });
 

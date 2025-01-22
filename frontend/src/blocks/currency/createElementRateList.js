@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 import { el, mount, setChildren } from 'redom';
 import { getChangedCurrency } from '../api/api';
+import createElementList from '../generalElements/createElementList';
 
 export default async function createElementRateList() {
   const socket = await getChangedCurrency();
@@ -28,7 +29,7 @@ export default async function createElementRateList() {
       arrayCurrency.shift();
     }
 
-    const list = el('ul', {
+    const list = createElementList('ul', {
       className: 'currency__rate-list list-reset',
     });
 
@@ -44,22 +45,24 @@ export default async function createElementRateList() {
         classNameValue = 'drop';
       }
 
-      const item = el('li', {
+      const item = createElementList('li', {
         className: 'currency__rate-item',
-      },
-      [
-        el('span', elem.name, {
-          className: 'currency__rate-item-code',
-        }),
-        el('span', {
-          className: `currency__rate-item-dashed ${classNameDashed}`,
-        }),
-        el('span', elem.rate, {
-          className: `currency__rate-item-value ${classNameValue}`,
-        }),
-      ]);
+        children: [
+          createElementList('span', {
+            text: elem.name,
+            className: 'currency__rate-item-code',
+          }),
+          createElementList('span', {
+            className: `currency__rate-item-dashed ${classNameDashed}`,
+          }),
+          createElementList('span', {
+            text: elem.rate,
+            className: `currency__rate-item-value ${classNameValue}`,
+          }),
+        ],
+      });
       mount(list, item);
-      setChildren(document.querySelector('.currency__rate-wrapper'), list);
+        setChildren(document.querySelector('.currency__rate-wrapper'), list);
     });
   };
 }

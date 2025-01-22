@@ -1,5 +1,10 @@
+@import "./mixins";
 html {
   box-sizing: border-box;
+}
+
+ul {
+  @include list-reset;
 }
 
 *,

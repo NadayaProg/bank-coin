@@ -10,7 +10,7 @@ export default function createAccountWrapperTop(data, router) {
     className: 'account__wrapper-view',
   },
   [
-    el('h2', 'Простмотр счёта', {
+    el('h2', 'Просмотр счёта', {
       className: 'account__wrapper-view-title',
     }),
     el('p', `№ ${data.account}`, {

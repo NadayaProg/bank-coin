@@ -6,7 +6,7 @@ export default function accountListNumber() {
   const inputField = document.querySelector('.account__wrap-form-label-input_number');
 
   const list = el('ul', {
-    className: 'account__wrap-form-wrapper-list list-reset',
+    className: 'account__wrap-form-wrapper-list',
   });
 
   // Событие input для поля ввода
